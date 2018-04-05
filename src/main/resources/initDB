@@ -1,0 +1,56 @@
+#CREATE SCHEMA `springAppGoIT` DEFAULT CHARACTER SET utf8 ;
+
+
+-- Table: user
+
+CREATE TABLE IF NOT EXISTS users  (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  email VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  firstname VARCHAR(255),
+  lastname VARCHAR(255)
+) ENGINE = InnoDB;
+
+-- Table: role
+CREATE TABLE IF NOT EXISTS roles (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  role VARCHAR(100) NOT NULL
+) ENGINE = InnoDB;
+
+-- Table: mapping roles and users
+CREATE TABLE IF NOT EXISTS user_roles(
+  user_id INT NOT NULL ,
+  roles_id INT NOT NULL,
+
+  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (roles_id) REFERENCES roles (id),
+  UNIQUE (user_id,roles_id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS manufacturer(
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  name VARCHAR(255) NOT NULL
+) ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS product (
+  id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL ,
+  price DECIMAL(10,2) NOT NULL ,
+  manufacturer_id INT NOT NULL ,
+
+  CONSTRAINT FOREIGN KEY (manufacturer_id) REFERENCES manufacturer (id)
+) ENGINE = InnoDB;
+
+
+--   Insert data
+# insert user's roles
+
+INSERT INTO roles VALUES (1,'ROLE_ADMIN');
+INSERT INTO roles VALUES (2, 'ROLE_USER');
+
+#insert admin users
+
+INSERT INTO `users` VALUES (1,'svitlana.anulich@gmail.com','$2a$10$HEgEVMAygz4qTqgSjDoZ/.HnxEWya5gvxX1wGw.Lyc2AweaDcqn1m',NULL ,NULL );
+INSERT INTO `user_roles` VALUES (1,1);
+
