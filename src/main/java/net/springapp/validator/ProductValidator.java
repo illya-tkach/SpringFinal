@@ -39,13 +39,13 @@ public class ProductValidator implements Validator {
             errors.rejectValue("name", "name.product.isnt.correct");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty");
 
-        if (product.getPrice() instanceof  BigDecimal){
-            if (!isBetween(product.getPrice(),BigDecimal.valueOf(0),BigDecimal.valueOf(1000000))){
-               errors.rejectValue("price","typeMismatch.price");
-            }
-        }
+//        if (product.getPrice() instanceof  BigDecimal){
+//            if (!isBetween(product.getPrice(),BigDecimal.valueOf(0),BigDecimal.valueOf(1000000))){
+//               errors.rejectValue("price","typeMismatch.price");
+//            }
+//        }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "manufacturer", "manufacturer.isnt.select");
 

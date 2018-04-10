@@ -1,10 +1,10 @@
+<%@ page import="java.io.OutputStream" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,18 +25,29 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Manufacturer</th>
+                <th>№</th>
+                <th>Наименование</th>
+                <th>Инв. номер</th>
+                <th>Сер. номер</th>
+                <th>Кол-во</th>
+                <th>Местонахождение</th>
+                <th>Счет</th>
                 <th width="100"></th>
                 <th width="100"></th>
             </tr>
             </thead>
+
+            <c:set var="count" value="0" />
             <tbody>
-            <c:forEach items="${listproducts}" var="product">
+            <c:forEach items="${listproducts}" var="product" >
+                <c:set var="count" value="${count+1}" />
                 <tr>
+                    <td><c:out value="${count}" /></td>
                     <td>${product.name}</td>
-                    <td>${product.price}</td>
+                    <td>${product.inventory}</td>
+                    <td>${product.serial}</td>
+                    <td>${product.quantity}</td>
+                    <td>${product.location}</td>
                     <td>${product.getManufacturer().getName()}</td>
                     <td><a href="<c:url value='/edit-product-${product.id}' />"
                            class="btn btn-success custom-width">edit</a></td>
@@ -50,7 +61,7 @@
 
 
     <div class="well">
-        <a href="<c:url value='/new-product' />">Add New Product</a>
+        <a href="<c:url value='/new-product' />">Добавить материальную ценность</a>
     </div>
 
 
