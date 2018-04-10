@@ -11,6 +11,9 @@ public class Manufacturer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+//    @Column(name = "number")
+//    public int number;
+
     @Column(name = "name")
     private String name;
 

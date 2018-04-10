@@ -21,7 +21,7 @@
 <div class="container">
     <%@include file="authheader.jsp" %>
     <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">List of products </span></div>
+        <div class="panel-heading"><span class="lead">Список материальных ценностей </span></div>
         <table class="table table-hover">
             <thead>
             <tr>

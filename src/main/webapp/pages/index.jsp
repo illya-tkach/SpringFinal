@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -27,18 +27,18 @@
             <table class="table table-hover">
                 <tr>
                     <td>
-                        <a href="<c:url value='/list_users' />">List of all users</a><br>
+                        <a href="<c:url value='/list_users' />">Список всех пользователей</a><br>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="<c:url value='/list_manufacturer' />">List of all manufacturer</a>
+                        <a href="<c:url value='/list_manufacturer' />">Список всех счетов</a>
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <a href="<c:url value='/list_products' />">List of all products</a>
+                        <a href="<c:url value='/list_products' />">Список всех материальных ценностей</a>
                     </td>
                 </tr>
             </table>
