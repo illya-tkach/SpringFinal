@@ -9,27 +9,36 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 @Component
 public class UserValidator implements Validator {
+    private final String RESOURCE_NAME = "validation";
     @Override
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
 
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_NAME, new Locale("en"));
+
     @Autowired
     UserService userService;
-
 
     @Override
     public void validate(Object o, Errors errors) {
 
         User user = (User) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty", resourceBundle.getString(ValidationTextConst.NOT_EMPTY));
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty", resourceBundle.getString(ValidationTextConst.NOT_EMPTY));
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty", resourceBundle.getString(ValidationTextConst.NOT_EMPTY));
 
         EmailValidator emailValidator = EmailValidator.getInstance();
         if (!emailValidator.isValid(user.getEmail())){
-            errors.rejectValue("email", "email.isnt.correct");
+            errors.rejectValue("email", "TestErrorCode", resourceBundle.getString(ValidationTextConst.EMAIL_INCORRECT));
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");

@@ -2,11 +2,15 @@ package net.springapp.service;
 
 import net.springapp.model.Role;
 import net.springapp.model.User;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface UserService {
-    void save(User user);
+    void save(User user) throws DataIntegrityViolationException;
 
     User findByEmail(String username);
 

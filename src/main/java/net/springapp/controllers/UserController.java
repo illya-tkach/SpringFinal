@@ -3,8 +3,12 @@ package net.springapp.controllers;
 import net.springapp.model.User;
 import net.springapp.service.SecurityService;
 import net.springapp.service.UserService;
+import net.springapp.service.UserServiceImpl;
 import net.springapp.validator.UserValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,16 +20,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Controller
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserService userService;
 
     @Autowired
     UserValidator userValidator;
+
     @Autowired
     SecurityService securityService;
 
@@ -37,7 +46,6 @@ public class UserController {
     @PostMapping({"/registration","/new-user"})
     public String getRegistration(@ModelAttribute("userForm") User userForm, BindingResult result, Model model){
         return getUserInfo(userForm, result, model, false);
-
     }
 
     @GetMapping("/list_users")
@@ -65,6 +73,7 @@ public class UserController {
         return "redirect:/list_users";
     }
 
+    //Utility methods
     private String AddDataToRegistForm(User user, Model model,boolean edit) {
         model.addAttribute("userForm", user);
         model.addAttribute("listroles", userService.findAllRole());
@@ -76,21 +85,19 @@ public class UserController {
     private String getUserInfo(User userForm, BindingResult result, Model model,boolean edit) {
         userValidator.validate(userForm, result);
         if (!edit) userValidator.isEmailDuplicate(userForm,result);
+        try {
+            userService.save(userForm);
+        } catch (DataIntegrityViolationException e) {
+            result.rejectValue("email", "Duplicate.userForm.email");
+            logger.info("Try to enter duplicate email [] to database", userForm.getEmail());
+            return AddDataToRegistForm(userForm, model,false);
+        }
 
-        if (result.hasErrors()) return AddDataToRegistForm(userForm, model,true);
-
-        userService.save(userForm);
         securityService.autologin(userForm.getEmail(), userForm.getConfirmPassword());
         model.addAttribute("users", userForm);
         model.addAttribute("loggedinuser", DefaultController.getPrincipal());
         if (edit) return "redirect:/list_users";
 
         return "index";
-
     }
-
-
-
-
-
 }

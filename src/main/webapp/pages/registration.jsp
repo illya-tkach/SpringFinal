@@ -50,7 +50,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="confirmPassword">Password</label>
+                <label class="col-md-3 control-lable" for="confirmPassword">Confirm Password</label>
                 <div class="col-md-7">
                     <form:input type="password" path="confirmPassword" id="confirmPassword" class="form-control input-sm" />
                     <div class="has-error">

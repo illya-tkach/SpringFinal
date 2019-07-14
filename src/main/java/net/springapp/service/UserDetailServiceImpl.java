@@ -1,6 +1,5 @@
 package net.springapp.service;
 
-import net.springapp.model.Role;
 import net.springapp.model.User;
 import net.springapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        user.getRoles().stream().forEach(n -> grantedAuthorities.add(new SimpleGrantedAuthority(n.getName())));
+//        for (Role role : user.getRoles()){
+//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+//        }
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }

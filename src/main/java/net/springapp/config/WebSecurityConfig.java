@@ -25,14 +25,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/registration").permitAll()
-                .antMatchers("/edit-user*","/new-user","/delete-user*").access("hasRole('ROLE_ADMIN')")
-                .anyRequest().authenticated()
+                    .antMatchers("/resources/**", "/registration", "/registrationJson").permitAll()
+                    .antMatchers("/edit-user*","/new-user","/delete-user*").access("hasRole('ROLE_ADMIN')")
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
                 .and()
-                .logout().permitAll();
+                .logout()
+                    .permitAll();
     }
 
     @Bean
@@ -42,7 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
         auth.authenticationProvider(authenticationProvider());
     }
 

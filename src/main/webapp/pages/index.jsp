@@ -30,17 +30,6 @@
                         <a href="<c:url value='/list_users' />">Список всех пользователей</a><br>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <a href="<c:url value='/list_manufacturer' />">Список всех счетов</a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <a href="<c:url value='/list_products' />">Список всех материальных ценностей</a>
-                    </td>
-                </tr>
             </table>
         </div>
     </div>

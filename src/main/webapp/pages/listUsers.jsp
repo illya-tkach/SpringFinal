@@ -30,10 +30,8 @@
             <th>Email</th>
             <th>Role</th>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <th width="100"></th>
-            </sec:authorize>
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <th width="100"></th>
+            <th width="100"></th>
+            <th width="100"></th>
             </sec:authorize>
 
         </tr>
