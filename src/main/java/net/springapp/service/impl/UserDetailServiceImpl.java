@@ -1,4 +1,4 @@
-package net.springapp.service;
+package net.springapp.service.impl;
 
 import net.springapp.model.User;
 import net.springapp.repository.UserRepository;

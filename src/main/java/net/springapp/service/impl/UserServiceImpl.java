@@ -1,10 +1,10 @@
-package net.springapp.service;
+package net.springapp.service.impl;
 
 import net.springapp.model.Role;
 import net.springapp.model.User;
 import net.springapp.repository.RoleRepository;
 import net.springapp.repository.UserRepository;
-import org.hibernate.exception.ConstraintViolationException;
+import net.springapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -1,5 +1,6 @@
-package net.springapp.service;
+package net.springapp.service.impl;
 
+import net.springapp.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
