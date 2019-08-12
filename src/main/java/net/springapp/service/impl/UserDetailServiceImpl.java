@@ -1,5 +1,6 @@
 package net.springapp.service.impl;
 
+import net.springapp.model.Role;
 import net.springapp.model.User;
 import net.springapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +28,20 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return loadUserByEmail(email);
     }
 
-    private UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+    private UserDetails loadUserByEmail(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(email);
+            throw new UsernameNotFoundException(username);
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         user.getRoles().stream().forEach(n -> grantedAuthorities.add(new SimpleGrantedAuthority(n.getName())));
-//        for (Role role : user.getRoles()){
-//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-//        }
+        for (Role role : user.getRoles()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
     }
 
 }

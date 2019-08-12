@@ -12,8 +12,6 @@ import java.util.List;
 public interface UserService {
     void save(User user) throws DataIntegrityViolationException;
 
-    User findByEmail(String username);
-
     List<User> getAllUsers();
 
     User findById(String id);

@@ -37,9 +37,6 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty", resourceBundle.getString(ValidationTextConst.NOT_EMPTY));
 
         EmailValidator emailValidator = EmailValidator.getInstance();
-        if (!emailValidator.isValid(user.getEmail())){
-            errors.rejectValue("email", "TestErrorCode", resourceBundle.getString(ValidationTextConst.EMAIL_INCORRECT));
-        }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
@@ -47,18 +44,12 @@ public class UserValidator implements Validator {
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "NotEmpty");
-        if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("confirmPassword", "Diff.userForm.passwordConfirm");
-        }
 
     }
 
 
     public void isEmailDuplicate(User user, Errors errors) {
 
-        if (userService.findByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "Duplicate.userForm.email");
-        }
 
     }
 }

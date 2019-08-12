@@ -41,12 +41,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        logger.info("User with name: {} {} registered", user.getLastName(), user.getFirstName());
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        logger.info("User with name: {} registered", user.getUserName());
     }
 
     @Override

@@ -42,7 +42,7 @@ public class UserRestController {
             return new ResponseEntity<>(userFromForm, HttpStatus.BAD_REQUEST);
         }
 
-        securityService.autologin(userFromForm.getEmail(), userFromForm.getConfirmPassword());
+        securityService.autologin(userFromForm.getUserName(), userFromForm.getPassword());
 
         return new ResponseEntity<>(userFromForm, HttpStatus.CREATED);
     }

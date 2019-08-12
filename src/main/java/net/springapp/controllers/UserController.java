@@ -45,7 +45,6 @@ public class UserController {
     @GetMapping("/list_users")
     public String showListUsers(Model model){
         List<User> users = userService.getAllUsers();
-        model.addAttribute("loggedinuser", DefaultController.getPrincipal());
         model.addAttribute("users", users);
         return "listUsers";
     }
@@ -72,7 +71,6 @@ public class UserController {
         model.addAttribute("userForm", user);
         model.addAttribute("listroles", userService.findAllRole());
         model.addAttribute("edit", edit);
-        model.addAttribute("loggedinuser", DefaultController.getPrincipal());
         return "registration";
     }
 
@@ -83,13 +81,12 @@ public class UserController {
             userService.save(userForm);
         } catch (DataIntegrityViolationException e) {
             result.rejectValue("email", "Duplicate.userForm.email");
-            logger.info("Try to enter duplicate email [] to database", userForm.getEmail());
+            logger.info("Try to enter duplicate email [] to database", userForm.getUserName());
             return AddDataToRegistForm(userForm, model,false);
         }
 
-        securityService.autologin(userForm.getEmail(), userForm.getConfirmPassword());
+        securityService.autologin(userForm.getUserName(), userForm.getPassword());
         model.addAttribute("users", userForm);
-        model.addAttribute("loggedinuser", DefaultController.getPrincipal());
         if (edit) return "redirect:/list_users";
 
         return "index";

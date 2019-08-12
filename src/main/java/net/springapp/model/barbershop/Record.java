@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "record")
+@Table(name = "record",uniqueConstraints = @UniqueConstraint(columnNames={"barber_id", "date", "time"}))
 public class Record {
 
     @Id
@@ -13,7 +13,7 @@ public class Record {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "barber_id")
+    @JoinColumn(name = "barber_id", nullable = false)
     private Barber barber;
 
     @Column(name = "date", nullable = false)
@@ -25,6 +25,10 @@ public class Record {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private Service service;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

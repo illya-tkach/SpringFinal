@@ -1,6 +1,9 @@
 package net.springapp.model.barbershop;
 
+import net.springapp.model.User;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.Set;
 
 @Entity
@@ -11,20 +14,33 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="email", unique = true)
+    @Column(name="email", unique = true, nullable = false)
     private String email;
 
-    @Column(name="phoneNumber", unique = true)
-    private String phoneNumber;
-
-    @Column(name = "firstname")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private Set<Record> records;
+
+    @OneToOne
+    @JoinColumn(name = "useraccount_id")
+    private User userAccount;
+
+    @Min(0)
+    @Column(name = "balance")
+    private int balance;
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public User getUserAccount() {
+        return userAccount;
+    }
 
     public Long getId() {
         return id;
@@ -40,14 +56,6 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {

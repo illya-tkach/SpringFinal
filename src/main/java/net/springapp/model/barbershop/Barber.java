@@ -1,24 +1,27 @@
 package net.springapp.model.barbershop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import net.springapp.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
 @Table(name = "barber")
 public class Barber {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "firstname")
+    @Column(name = "firstname",nullable=false)
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "lastname",nullable=false)
     private String lastName;
 
-    @Column(name = "photo")
+    @Column(name = "photoUrl",nullable=false)
     private String photoUrl;
 
     @JsonIgnore
@@ -33,6 +36,14 @@ public class Barber {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "barber")
     private Set<Record> records;
+
+    @OneToOne
+    @JoinColumn(name = "useraccount_id")
+    private User userAccount;
+
+    public User getUserAccount() {
+        return userAccount;
+    }
 
     public Long getId() {
         return id;

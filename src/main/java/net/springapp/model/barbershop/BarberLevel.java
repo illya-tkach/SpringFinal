@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "barberLevel")
+@Table(name = "barberlevel")
 public class BarberLevel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,10 +10,10 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column (name="serviceName", unique = true)
+    @Column (name="service_name", unique = true, nullable = false)
     private String serviceName;
 
-    @Column (name="cost")
+    @Column (name="cost", nullable = false)
     private int serviceCost;
 
     @ManyToMany(mappedBy = "services")
