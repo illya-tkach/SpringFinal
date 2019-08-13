@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.springapp.model.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -34,6 +33,7 @@ public class Barber {
     @JoinColumn(name = "level_id", nullable = false)
     private BarberLevel barberLevel;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "barber")
     private Set<Record> records;
 

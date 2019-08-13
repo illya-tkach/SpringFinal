@@ -1,6 +1,7 @@
 package net.springapp.model.barbershop;
 
 import net.springapp.model.User;
+import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -30,9 +31,16 @@ public class Client {
     @JoinColumn(name = "useraccount_id")
     private User userAccount;
 
-    @Min(0)
-    @Column(name = "balance")
+    @Column(name = "balance", columnDefinition = "int(10) unsigned DEFAULT NULL")
     private int balance;
+
+    public void setUserAccount(User userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     public int getBalance() {
         return balance;

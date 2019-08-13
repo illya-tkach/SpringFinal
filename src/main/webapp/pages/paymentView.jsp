@@ -1,8 +1,12 @@
+<%@ page import="java.io.OutputStream" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.lang}"/>
-<fmt:setBundle basename="messages"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +43,7 @@
             </li>
         </ul>
         <ul class="navbar-nav ">
-            <li class="nav-item">
+            <li class="nav-item mr-2">
                 <span class="navbar-text"><fmt:message key="lang.change" /></span>:
                 <select id="locales">
                     <option value=""></option>
@@ -47,14 +51,19 @@
                     <option value="en"><fmt:message key="lang.en" /></option>
                 </select>
             </li>
-            <li class="nav-item mr-2">
-                <span style="color:red">[ ${loginedUser.userName} ]</span>
+            <li class="nav-item">
+                <span class="navbar-text">
+                Login as:
+                </span>
             </li>
-            <c:if test="${loginedUser!= null}">
-                <li class="nav-item mr-2">
-                    <a class="nav-link" href="/logout"><fmt:message key="menu.logout" /></a>
-                </li>
-            </c:if>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <strong><security:authentication property="principal.username"/></strong>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<c:url value="/logout"/>">Выйти</a>
+                </div>
+            </li>
         </ul>
 
     </div>
@@ -65,7 +74,7 @@
         $("#locales").change(function () {
             var selectedOption = $('#locales').val();
             if (selectedOption != ''){
-                window.location.replace('/?sessionLocale=' + selectedOption);
+                window.location.replace('/booking?lang=' + selectedOption);
             }
         });
     });

@@ -12,16 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class DefaultController {
 
-    @PostMapping("/booking")
-    public String visitRegistration(Model model, @ModelAttribute("barberName") String barberName,
-                                          @ModelAttribute("serviceName") String serviceName,
-                                          @ModelAttribute("dateAndTime") String dateAndTime)
-    {
-        model.addAttribute("barberName", barberName);
-
-        return "booking";
-    }
-
     @GetMapping("/")
     public String indexPage(Model model) {
         return "homeView";

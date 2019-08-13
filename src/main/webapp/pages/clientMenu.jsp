@@ -188,8 +188,7 @@
                                 var resultString = array[1] + "-" + array[0] + "-" + array[2];
                                 $.ajax({
                                     type: 'post',
-                                    url: '/timeAll',
-                                    data:{"date":resultString},
+                                    url: '/timeAll-' + resultString,
                                     success: function (data) {
                                         var select = $('#timeRecordList').empty();
                                         $.each(data, function (i, item) {

@@ -1,6 +1,7 @@
 package net.springapp.controllers.barbershop;
 
 import net.springapp.model.barbershop.Record;
+import net.springapp.model.barbershop.ServiceStatus;
 import net.springapp.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +23,7 @@ public class RecordRestController {
 
     @RequestMapping("/dateAll")
     public List<LocalDate> allAvailableDatesForBooking()  {
-        return recordService.getAllRecords().stream().map(Record::getLocalDate).collect(Collectors
-                .toCollection(ArrayList::new));
+        return recordService.findDateByStatus(ServiceStatus.NOT_RESERVED);
     }
 
     @PostMapping("/timeAll-{date}")
@@ -33,7 +33,8 @@ public class RecordRestController {
 
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        return recordService.getAllRecordsByDate(localDate).stream().map(Record::getLocalTime).collect(Collectors
-                .toCollection(ArrayList::new));
+        return recordService.getAllRecordsTimeByDate(localDate);
     }
+
+
 }
