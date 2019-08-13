@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BarberService {
     List<Barber> getAllBarbers();
+    List<Barber> barbersByService(long serviceId);
+    List<Barber> barbersByDateAndTime (String date);
 }

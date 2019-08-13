@@ -50,7 +50,7 @@ public class RecordController {
     public String visitRegistration(Model model)
     {
         List<Record> recordList = recordService.getAllRecords();
-        model.addAttribute("cost", recordList);
+        model.addAttribute("recordList", recordList);
 
         return "listRecords";
     }

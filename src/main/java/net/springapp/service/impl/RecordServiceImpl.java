@@ -7,8 +7,10 @@ import net.springapp.model.barbershop.Record;
 import net.springapp.model.barbershop.ServiceStatus;
 import net.springapp.repository.*;
 import net.springapp.service.RecordService;
+import net.springapp.service.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -41,7 +44,11 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public List<Record> getAllRecords() {
-        return recordRepository.findAll();
+        return recordRepository.findAll(orderByDateAndTime());
+    }
+    private Sort orderByDateAndTime() {
+        return new Sort(Sort.Direction.ASC, "localDate")
+                .and(new Sort(Sort.Direction.ASC, "localTime"));
     }
 
     @Override
@@ -67,14 +74,20 @@ public class RecordServiceImpl implements RecordService {
     @Transactional
     @Override
     public void payAndSaveRecord(long barberId, long serviceId, String dateAndTime, String userName) throws DataIntegrityViolationException {
-        String[] dateAndTimeString = dateAndTime.split(" ");
-        String date = dateAndTimeString[0];
-        String time = dateAndTimeString[1];
-        DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        //convert String to LocalDate
-        LocalDate localDate = LocalDate.parse(date, dateformatter);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime localTime = LocalTime.parse(time, timeFormatter);
+//        String[] dateAndTimeString = dateAndTime.split(" ");
+//        String date = dateAndTimeString[0];
+//        String time = dateAndTimeString[1];
+//        DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//        //convert String to LocalDate
+//        LocalDate localDate = LocalDate.parse(date, dateformatter);
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//        LocalTime localTime = LocalTime.parse(time, timeFormatter);
+        LocalDateTime localDateTime = ServiceUtil.convertToDateAndTime(dateAndTime, "_", "MM/dd/yyyy");
+
+        LocalDate localDate = localDateTime.toLocalDate();
+
+        LocalTime localTime = localDateTime.toLocalTime();
+
 
         User user = userRepository.findByUserName(userName);
 

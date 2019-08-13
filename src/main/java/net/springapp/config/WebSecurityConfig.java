@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/resources/**", "/registration", "/registrationJson", "/",
                             "/barbersAll", "/servicesAll", "/dateAll" , "/timeAll*" ,"/visitRegistration", "/booking").permitAll()
-                    .antMatchers("/edit-user*","/new-user","/delete-user*").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/edit-user*","/new-user","/delete-user*", "/recordList").access("hasRole('ROLE_ADMIN')")
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()

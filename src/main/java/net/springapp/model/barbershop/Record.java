@@ -38,6 +38,14 @@ public class Record {
         return status;
     }
 
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
     public void setStatus(ServiceStatus status) {
         this.status = status;
     }

@@ -1,8 +1,12 @@
+<%@ page import="java.io.OutputStream" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.lang}"/>
-<fmt:setBundle basename="messages"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +15,7 @@
 
     <title>Users List</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet"/>
 
@@ -33,11 +38,18 @@
                     <option value="en"><fmt:message key="lang.en" /></option>
                 </select>
             </li>
-            <li class="nav-item mr-2">
-                <span style="color:red">[ ${loginedUser.userName} ]</span>
+            <li class="nav-item">
+                <span class="navbar-text">
+                Login as:
+                </span>
             </li>
-            <li class="nav-item mr-2">
-                <a class="nav-link" href="/logout"><fmt:message key="menu.logout" /></a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <strong><security:authentication property="principal.username"/></strong>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<c:url value="/logout"/>">Выйти</a>
+                </div>
             </li>
         </ul>
 
@@ -55,30 +67,57 @@
                 <th>Client email</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${recordList}" var="record">
                 <tr>
                     <td>${record.barber.firstName} ${record.barber.lastName}</td>
-                    <td>${record.service.serviceName}</td>
-                    <td>${record.client.firstName} ${record.client.lastName}</td>
-                    <td>${record.client.email}</td>
+                    <c:choose>
+                        <c:when test= "${record.service != null} ">
+                            <td>${record.service.serviceName}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>-</td>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test= "${record.client != null}">
+                            <td>${record.client.firstName} ${record.client.lastName}</td>
+                            <td>${record.client.email}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>-</td>
+                            <td>-</td>
+                        </c:otherwise>
+                    </c:choose>
                     <td>${record.localDate}</td>
                     <td>${record.localTime}</td>
+                    <td>${record.status}</td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
     </div>
-
 </div>
+<p align="center">
+<sec:authorize access="hasRole('ADMIN')">
+    <button onclick="AddRecordModal();return false;" type="button" class="btn btn-outline-primary mb-3">Add new Record</button>
+</sec:authorize>
+</p>
+
+<script>
+
+</script>
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $("#locales").change(function () {
             var selectedOption = $('#locales').val();
             if (selectedOption != ''){
-                window.location.replace('/recordList?sessionLocale=' + selectedOption);
+                window.location.replace('/recordList?lang=' + selectedOption);
             }
         });
     });

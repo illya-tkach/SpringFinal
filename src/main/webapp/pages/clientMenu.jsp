@@ -120,7 +120,7 @@
                         <script type="text/javascript">
                             function showBarberModal() {
                                 $.ajax({
-                                    url: '/barbersAll',
+                                    url: setBarberUrl(),
                                     dataType: 'json',
                                     success: function (data) {
                                         var select = $('#prodResponser').empty();
@@ -137,12 +137,28 @@
                                 });
                                 $("#exampleModalBarber").modal("show");
                             }
+                            function setBarberUrl() {
+                                if ($("#smallDateAndTimeText").text().length == 0 && $("#smallServiceTypeText").text().length == 0){
+                                    return "/barbersAll";
+                                } else if ($("#smallDateAndTimeText").text().length == 0) {
+                                    return "/barbersByService-" + $("#serviceId").val();
+                                } else if ($("#smallServiceTypeText").text().length == 0) {
+                                    let arrayDate = sessionStorage.getItem('selectedDate').split("/");
+                                    let resultDate = arrayDate[0] + "-" + arrayDate[1] + "-" + arrayDate[2];
+                                    return "/barbersByCalendar-" + resultDate + '_' + sessionStorage.getItem('selectedTime');
+                                }
+                            }
                             function selectBarber(obj) {
                                 var barberNameText = $(obj).children('div').children('h5').text();
                                 var idBarber = $(obj).val();
                                 $( "#barberId" ).val(  idBarber );
                                 $( "#barberName" ).val(  barberNameText );
                                 $("#smallBarberNameText").text( barberNameText );
+
+                                if ($("#smallDateAndTimeText").text().length != 0 && $("#smallServiceTypeText").text().length != 0){
+                                    $('#your-id').attr("disabled", false);
+                                }
+
                                 $("#exampleModalBarber").modal("hide");
                             }
                         </script>
@@ -207,8 +223,12 @@
                         <script>
                             function selectTime(obj) {
                                 var time = $(obj).text();
+                                sessionStorage.setItem('selectedTime', time);
                                 $("#dateAndTime").val( sessionStorage.getItem('selectedDate') + ' ' + time );
                                 $("#smallDateAndTimeText").text( sessionStorage.getItem('selectedDate') + ' ' + time );
+                                if ($("#smallBarberNameText").text().length != 0 && $("#smallServiceTypeText").text().length != 0){
+                                    $('#your-id').attr("disabled", false);
+                                }
                                 $("#exampleModalTime").modal("hide");
                             }
                         </script>
@@ -227,7 +247,6 @@
                                                 '</small>' +
                                                 '</div>' +
                                                 '</li>');
-
                                         });
                                     }
                                 });
@@ -239,6 +258,9 @@
                                 $("#serviceId").val( idService );
                                 $("#serviceName").val( serviceText );
                                 $("#smallServiceTypeText").text( serviceText );
+                                if ($("#smallBarberNameText").text().length != 0 && $("#smallDateAndTimeText").text().length != 0){
+                                    $('#your-id').attr("disabled", false);
+                                }
                                 $("#exampleModalService").modal("hide");
                             }
                         </script>
@@ -249,7 +271,7 @@
                         <input type="hidden" id="serviceName" name="serviceName" value="">
                         <input type="hidden" id="serviceId" name="serviceId" value="">
                         <input type="hidden" id="dateAndTime" name="dateAndTime" value="">
-                        <button id="your-id" form="form-id" class="btn btn-secondary btn-lg btn-block mt-1" value="Submit"><fmt:message key="menu.book"/></button>
+                        <button id="your-id" form="form-id" class="btn btn-secondary btn-lg btn-block mt-1" value="Submit" disabled><fmt:message key="menu.book"/></button>
                     </form>
                     <script>
                         var form = document.getElementById("form-id");
