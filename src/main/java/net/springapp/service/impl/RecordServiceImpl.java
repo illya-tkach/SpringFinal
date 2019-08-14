@@ -43,6 +43,16 @@ public class RecordServiceImpl implements RecordService {
     BarberRepository barberRepository;
 
     @Override
+    public void remove(long id) {
+        recordRepository.delete(id);
+    }
+
+    @Override
+    public Record getRecordById(long id) {
+        return recordRepository.findOne(id);
+    }
+
+    @Override
     public List<Record> getAllRecords() {
         return recordRepository.findAll(orderByDateAndTime());
     }
@@ -74,14 +84,7 @@ public class RecordServiceImpl implements RecordService {
     @Transactional
     @Override
     public void payAndSaveRecord(long barberId, long serviceId, String dateAndTime, String userName) throws DataIntegrityViolationException {
-//        String[] dateAndTimeString = dateAndTime.split(" ");
-//        String date = dateAndTimeString[0];
-//        String time = dateAndTimeString[1];
-//        DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-//        //convert String to LocalDate
-//        LocalDate localDate = LocalDate.parse(date, dateformatter);
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-//        LocalTime localTime = LocalTime.parse(time, timeFormatter);
+
         LocalDateTime localDateTime = ServiceUtil.convertToDateAndTime(dateAndTime, "_", "MM/dd/yyyy");
 
         LocalDate localDate = localDateTime.toLocalDate();

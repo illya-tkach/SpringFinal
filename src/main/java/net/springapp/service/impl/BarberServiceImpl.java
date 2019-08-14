@@ -42,4 +42,9 @@ public class BarberServiceImpl implements BarberService {
         return barberRepository.findBarberByDateAndTime(localDate, localTime, ServiceStatus.NOT_RESERVED);
 
     }
+
+    @Override
+    public Barber findById(long id) {
+        return barberRepository.findOne(id);
+    }
 }

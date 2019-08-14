@@ -57,17 +57,21 @@
 </nav>
 <div class="container d-flex justify-content-center">
     <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">List of Records </span></div>
+        <div class="panel-heading"><span class="lead"><fmt:message key="recordPage.tableTitle" /></span></div>
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Barber</th>
-                <th>Service Type</th>
-                <th>Client name</th>
-                <th>Client email</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
+                <th><fmt:message key="recordPage.table.barber" /></th>
+                <th><fmt:message key="recordPage.table.serviceType" /></th>
+                <th><fmt:message key="recordPage.table.clientName" /></th>
+                <th><fmt:message key="recordPage.table.clientMail" /></th>
+                <th><fmt:message key="recordPage.table.date" /></th>
+                <th><fmt:message key="recordPage.table.time" /></th>
+                <th><fmt:message key="recordPage.table.status" /></th>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <th width="100"></th>
+                <th width="100"></th>
+                </sec:authorize>
             </tr>
             </thead>
             <tbody>
@@ -95,17 +99,23 @@
                     <td>${record.localDate}</td>
                     <td>${record.localTime}</td>
                     <td>${record.status}</td>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <td><a href="<c:url value='/served-${record.id}' />" class="btn btn-secondary custom-width"><fmt:message key="recordPage.button.served" /></a></td>
+                    <td><a href="<c:url value='/remove-${record.id}' />" class="btn btn-danger custom-width"><fmt:message key="recordPage.button.delete" /></a></td>
+                    </sec:authorize>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
-<p align="center">
+
 <sec:authorize access="hasRole('ADMIN')">
-    <button onclick="AddRecordModal();return false;" type="button" class="btn btn-outline-primary mb-3">Add new Record</button>
+<div align="center" class="well">
+    <a class="btn btn-primary" href="<c:url value='/newRecord' />"><fmt:message key="recordPage.button.addNew" /></a>
+</div>
+<%--    <button onclick="AddRecordModal();return false;" type="button" class="btn btn-outline-primary mb-3">Add new Record</button>--%>
 </sec:authorize>
-</p>
 
 <script>
 

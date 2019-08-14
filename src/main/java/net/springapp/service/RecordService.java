@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface RecordService {
 
+    void remove(long id);
+
+    Record getRecordById(long id);
+
     List<Record> getAllRecords();
 
     List<LocalTime> getAllRecordsTimeByDate(LocalDate date);
