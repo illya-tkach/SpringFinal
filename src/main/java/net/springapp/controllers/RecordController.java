@@ -1,5 +1,6 @@
 package net.springapp.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import net.springapp.model.barbershop.Barber;
 import net.springapp.model.barbershop.Record;
 import net.springapp.model.barbershop.ServiceStatus;
@@ -21,6 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class RecordController {
 
@@ -83,6 +85,7 @@ public class RecordController {
 
         Barber selectedBarber = barberService.findById(Long.parseLong(barberId));
         Record newRecord = Record.builder().barber(selectedBarber).localDate(localDate).localTime(localTime).status(ServiceStatus.NOT_RESERVED).build();
+
         recordService.save(newRecord);
 
         return "redirect:recordList";
@@ -98,6 +101,8 @@ public class RecordController {
 
         recordService.save(record);
 
+        log.info("Record with id {} served.", recordId);
+
         return "redirect:recordList";
     }
 
@@ -106,6 +111,7 @@ public class RecordController {
 
         recordService.remove(recordId);
 
+        log.info("Record with id {} deleted.", recordId);
         return "redirect:recordList";
     }
 }
